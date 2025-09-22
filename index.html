@@ -3,318 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>시험 시계 - 전주호성중학교</title>
+    <title>전주호성중학교 2학기 1차고사 시계</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        /* 전체 페이지 스타일 */
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            margin: 0;
+            background-color: #f0f2f5;
         }
-        
-        .header {
+        /* 컨테이너 스타일 */
+        .container {
             text-align: center;
-            padding: 25px;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
         }
-        
-        .school-title {
-            font-size: 3.5em;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .exam-title {
-            font-size: 2.5em;
-            opacity: 0.9;
-        }
-        
-        .main-content {
-            flex: 1;
-            display: flex;
-            padding: 20px;
-            gap: 30px;
-        }
-        
-        .clock-section {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .digital-clock {
-            font-size: 8em;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
-            background: rgba(255,255,255,0.1);
-            padding: 30px 50px;
-            border-radius: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            margin-bottom: 20px;
-        }
-        
-        .date-display {
-            font-size: 2.5em;
-            opacity: 0.9;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .info-section {
-            flex: 1;
-            background: rgba(255,255,255,0.15);
-            border-radius: 15px;
-            padding: 25px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .schedule-title {
-            font-size: 2.8em;
+        /* 제목 스타일 */
+        h1 {
+            color: #1c3d7e;
             margin-bottom: 30px;
-            text-align: center;
-            border-bottom: 2px solid rgba(255,255,255,0.3);
-            padding-bottom: 15px;
         }
-        
-        .schedule-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            font-size: 2em;
+        /* 표 스타일 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
-        
-        .schedule-item:last-child {
-            border-bottom: none;
+        th, td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
         }
-        
-        .time-slot {
+        th {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        /* 클릭 가능한 버튼 스타일 */
+        .timer-button {
+            display: block;
+            padding: 15px 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
             font-weight: bold;
-            color: #FFE082;
+            border-radius: 8px;
+            transition: background-color 0.2s ease-in-out, transform 0.2s;
+            font-size: 16px;
+        }
+        /* 버튼에 마우스를 올렸을 때 스타일 */
+        .timer-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
         }
         
-        .subject {
-            flex: 1;
-            text-align: center;
-            font-weight: 600;
+        /* 오늘 날짜 시험 행을 강조하는 스타일 */
+        .today-exam {
+            background-color: #fff3cd; /* 부드러운 노란색 배경 */
         }
-        
-        .current-exam {
-            background: rgba(255,193,7,0.3);
-            border-left: 4px solid #FFC107;
-            padding-left: 15px;
-            animation: highlight 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes highlight {
-            from { background: rgba(255,193,7,0.3); }
-            to { background: rgba(255,193,7,0.5); }
-        }
-        
-        .notice-section {
-            background: rgba(0,0,0,0.2);
-            padding: 20px 25px;
-            text-align: center;
-        }
-        
-        .notice-title {
-            font-size: 2.2em;
-            margin-bottom: 15px;
-            color: #FFE082;
+        .today-exam > th {
+            color: #856404;
             font-weight: bold;
         }
-        
-        .notice-content {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            font-size: 1.8em;
+
+        /* --- Gemini API 기능 관련 스타일 --- */
+        .cheer-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
-        
-        .notice-row {
-            opacity: 0.95;
+
+        .cheer-button {
+            background-color: #28a745; /* Green color */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
         }
-        
-        .footer {
-            text-align: center;
+
+        .cheer-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .cheer-message-box {
+            margin-top: 20px;
             padding: 15px;
-            background: rgba(0,0,0,0.2);
-            font-size: 1.2em;
-            opacity: 0.8;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            font-style: italic;
+            font-size: 15px;
+            line-height: 1.6;
+            border: 1px solid #dee2e6;
         }
-        
-        @media (max-width: 1200px) {
-            .school-title {
-                font-size: 3em;
-            }
-            .exam-title {
-                font-size: 2.2em;
-            }
-            .digital-clock { 
-                font-size: 7em;
-                padding: 25px 35px;
-            }
-            .date-display {
-                font-size: 2.2em;
-            }
-            .schedule-title {
-                font-size: 2.4em;
-            }
-            .schedule-item {
-                font-size: 1.8em;
-            }
-            .notice-title {
-                font-size: 2em;
-            }
-            .notice-content {
-                font-size: 1.6em;
-            }
-        }
-        
-        @media (max-width: 900px) {
-            .main-content { 
-                flex-direction: column;
-                gap: 20px;
-            }
-            .clock-section {
-                padding: 15px;
-            }
-            .school-title {
-                font-size: 2.5em;
-            }
-            .exam-title {
-                font-size: 2em;
-            }
-            .digital-clock { 
-                font-size: 6em;
-                padding: 20px 30px;
-            }
-            .date-display {
-                font-size: 1.8em;
-            }
-            .schedule-title {
-                font-size: 2em;
-            }
-            .schedule-item {
-                font-size: 1.5em;
-            }
-            .notice-title {
-                font-size: 1.8em;
-            }
-            .notice-content {
-                font-size: 1.4em;
-            }
-        }
+
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="school-title">전주호성중학교</div>
-        <div class="exam-title">1학년 2학기 1차고사</div>
-    </div>
-    
-    <div class="main-content">
-        <div class="clock-section">
-            <div class="digital-clock" id="clock">00:00:00</div>
-            <div class="date-display" id="date">날짜를 불러오는 중...</div>
-        </div>
-        
-         <div class="info-section">
-            <div class="schedule-title">📅 오늘의 시험 일정</div>
-            <div class="schedule-item" data-start="0900" data-end="0950">
-                <span class="time-slot">1교시 (09:05~09:50)</span>
-                <span class="subject">수학</span>
-            </div>
-            <div class="schedule-item" data-start="1010" data-end="1055">
-                <span class="time-slot">2교시 (10:10~10:55)</span>
-                <span class="subject">자율학습</span>
-            </div>
-            <div class="schedule-item" data-start="1110" data-end="1155">
-                <span class="time-slot">3교시 (11:10~11:55)</span>
-                <span class="subject">사회</span>
-            </div>
-        </div>
-    </div>
 
-    
-    <div class="notice-section">
-        <div class="notice-title">⚠️ 시험 중 유의사항</div>
-        <div class="notice-content">
-            <div class="notice-row">📱 모든 전자기기 미제출시 부정행위 | 📝 서답형은 검은색 볼펜으로 기입 | ✋ 서답형은 수정테이프 사용 금지 </div>
-            <div class="notice-row">⏰ 시험 종료 후 자리에서 대기 | ❌ 부정행위 시 해당 과목 0점 처리 </div>
+    <div class="container">
+        <h1>전주호성중학교 2학기 1차고사</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>날짜</th>
+                    <th>1학년</th>
+                    <th>2학년</th>
+                    <th>3학년</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 각 tr에 id를 추가하여 JavaScript가 선택할 수 있도록 합니다. -->
+                <tr id="day-09-30">
+                    <th>9월 30일</th>
+                    <td><a href="0930_1.html" class="timer-button">시험 시작</a></td>
+                    <td><a href="0930_2.html" class="timer-button">시험 시작</a></td>
+                    <td><a href="0930_3.html" class="timer-button">시험 시작</a></td>
+                </tr>
+                <tr id="day-10-01">
+                    <th>10월 1일</th>
+                    <td><a href="1001_1.html" class="timer-button">시험 시작</a></td>
+                    <td><a href="1001_2.html" class="timer-button">시험 시작</a></td>
+                    <td><a href="1001_3.html" class="timer-button">시험 시작</a></td>
+                </tr>
+                <tr id="day-10-02">
+                    <th>10월 2일</th>
+                    <td><a href="1002_1.html" class="timer-button">시험 시작</a></td>
+                    <td><a href="1002_2.html" class="timer-button">시험 시작</a></td>
+                    <td><a href="1002_3.html" class="timer-button">시험 시작</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- --- Gemini API 기능 섹션 --- -->
+        <div class="cheer-section">
+            <button id="cheerButton" class="cheer-button">✨ 행운의 응원 메시지 받기</button>
+            <p id="cheerMessage" class="cheer-message-box">버튼을 눌러 AI의 응원을 받아보세요!</p>
         </div>
-    </div>
-    
-    <div class="footer">
-        한국표준시(KST) 기준 | 시험 중 조용히! 📚
     </div>
 
     <script>
-        function updateTime() {
-            var now = new Date();
+        // 오늘 날짜 강조 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+
+            let todayRowId = '';
+
+            if (month === 9 && day === 30) {
+                todayRowId = 'day-09-30';
+            } else if (month === 10 && day === 1) {
+                todayRowId = 'day-10-01';
+            } else if (month === 10 && day === 2) {
+                todayRowId = 'day-10-02';
+            }
+
+            if (todayRowId) {
+                const row = document.getElementById(todayRowId);
+                if (row) {
+                    row.classList.add('today-exam');
+                }
+            }
+        });
+
+        // --- Gemini API 호출 기능 ---
+        const cheerButton = document.getElementById('cheerButton');
+        const cheerMessageBox = document.getElementById('cheerMessage');
+
+        cheerButton.addEventListener('click', generateCheerMessage);
+
+        async function generateCheerMessage() {
+            cheerMessageBox.textContent = '응원 메시지를 만들고 있어요... 잠시만 기다려주세요! 🤖';
+            cheerButton.disabled = true;
+
+            const apiKey = ""; // API 키는 비워 둡니다.
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
             
-            // 시간 표시
-            var hours = now.getHours().toString().padStart(2, '0');
-            var minutes = now.getMinutes().toString().padStart(2, '0');
-            var seconds = now.getSeconds().toString().padStart(2, '0');
-            var timeString = hours + ':' + minutes + ':' + seconds;
-            
-            document.getElementById('clock').textContent = timeString;
-            
-            // 날짜 표시
-            var year = now.getFullYear();
-            var month = now.getMonth() + 1;
-            var date = now.getDate();
-            var weekdays = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-            var weekday = weekdays[now.getDay()];
-            var dateString = year + '년 ' + month + '월 ' + date + '일 ' + weekday;
-            
-            document.getElementById('date').textContent = dateString;
-            
-            // 현재 시험 과목 하이라이트
-            checkCurrentExam(now);
-        }
-        
-        function checkCurrentExam(now) {
-            var currentTime = now.getHours() * 100 + now.getMinutes();
-            var scheduleItems = document.querySelectorAll('.schedule-item');
-            
-            for (var i = 0; i < scheduleItems.length; i++) {
-                var item = scheduleItems[i];
-                var startTime = parseInt(item.getAttribute('data-start'));
-                var endTime = parseInt(item.getAttribute('data-end'));
-                
-                if (currentTime >= startTime && currentTime <= endTime) {
-                    item.classList.add('current-exam');
-                } else {
-                    item.classList.remove('current-exam');
+            const userQuery = "중학교 시험을 앞두고 긴장하고 있을 학생을 위해, 힘이 되고 기운을 북돋아주는 창의적인 응원 메시지를 한 문장으로 생성해줘. 너무 길지 않게, 긍정적인 말로 부탁해.";
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                generationConfig: {
+                  temperature: 0.9,
+                  maxOutputTokens: 100,
+                }
+            };
+
+            let response;
+            let retries = 3;
+            let delay = 1000;
+
+            for (let i = 0; i < retries; i++) {
+                try {
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        const candidate = result.candidates?.[0];
+                        if (candidate && candidate.content?.parts?.[0]?.text) {
+                            cheerMessageBox.textContent = candidate.content.parts[0].text.trim();
+                        } else {
+                            throw new Error('Invalid response structure from API.');
+                        }
+                        cheerButton.disabled = false;
+                        return;
+                    } else if (response.status === 429 || response.status >= 500) {
+                        if (i === retries - 1) throw new Error(`API request failed after retries with status: ${response.status}`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2;
+                    } else {
+                        throw new Error(`API request failed with status: ${response.status}`);
+                    }
+                } catch (error) {
+                    if (i === retries - 1) {
+                        console.error('Error generating cheer message:', error);
+                        cheerMessageBox.textContent = '메시지를 불러오는 데 실패했어요. 잠시 후 다시 시도해주세요. 😥';
+                        cheerButton.disabled = false;
+                        return;
+                    }
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
                 }
             }
         }
-        
-        // 페이지 로드 시 시작
-        document.addEventListener('DOMContentLoaded', function() {
-            updateTime();
-            setInterval(updateTime, 1000);
-        });
     </script>
+
 </body>
 </html>
+
