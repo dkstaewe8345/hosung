@@ -71,7 +71,7 @@
             font-weight: bold;
         }
 
-        /* --- Gemini API 기능 관련 스타일 --- */
+        /* --- 응원 메시지 기능 관련 스타일 --- */
         .cheer-section {
             margin-top: 30px;
             padding-top: 20px;
@@ -149,10 +149,10 @@
             </tbody>
         </table>
 
-        <!-- --- Gemini API 기능 섹션 --- -->
+        <!-- --- 랜덤 응원 메시지 기능 섹션 --- -->
         <div class="cheer-section">
             <button id="cheerButton" class="cheer-button">✨ 행운의 응원 메시지 받기</button>
-            <p id="cheerMessage" class="cheer-message-box">버튼을 눌러 AI의 응원을 받아보세요!</p>
+            <p id="cheerMessage" class="cheer-message-box">버튼을 눌러 응원의 한마디를 확인해보세요!</p>
         </div>
     </div>
 
@@ -181,73 +181,33 @@
             }
         });
 
-        // --- Gemini API 호출 기능 ---
+        // --- 랜덤 응원 메시지 표시 기능 ---
         const cheerButton = document.getElementById('cheerButton');
         const cheerMessageBox = document.getElementById('cheerMessage');
 
-        cheerButton.addEventListener('click', generateCheerMessage);
+        // 미리 준비된 응원 메시지 목록
+        const cheerMessages = [
+            "지금까지 노력한 너 자신을 믿어봐, 분명 좋은 결과가 있을 거야!",
+            "떨지 말고, 풀 수 있는 문제부터 차근차근! 넌 할 수 있어.",
+            "결과도 중요하지만, 최선을 다하는 너의 모습이 가장 멋져!",
+            "하나의 점이 너의 전부를 평가할 순 없어. 편안하게 보고 와!",
+            "찍는 문제마다 정답이 되기를! 행운이 함께할 거야.",
+            "공부하느라 정말 고생 많았어. 마지막까지 힘내자!",
+            "실수만 하지 말자! 아는 문제는 꼭 맞추는 거야."
+        ];
 
-        async function generateCheerMessage() {
-            cheerMessageBox.textContent = '응원 메시지를 만들고 있어요... 잠시만 기다려주세요! 🤖';
-            cheerButton.disabled = true;
+        cheerButton.addEventListener('click', showRandomCheerMessage);
 
-            const apiKey = "AIzaSyD2Okwowcv-TSSrq18uqTx7K26diozBx7c"; // API 키는 비워 둡니다.
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        function showRandomCheerMessage() {
+            // 메시지 목록에서 무작위로 하나를 선택합니다.
+            const randomIndex = Math.floor(Math.random() * cheerMessages.length);
+            const randomMessage = cheerMessages[randomIndex];
             
-            const userQuery = "중학교 시험을 앞두고 긴장하고 있을 학생을 위해, 힘이 되고 기운을 북돋아주는 창의적인 응원 메시지를 한 문장으로 생성해줘. 너무 길지 않게, 긍정적인 말로 부탁해.";
-
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                generationConfig: {
-                  temperature: 0.9,
-                  maxOutputTokens: 100,
-                }
-            };
-
-            let response;
-            let retries = 3;
-            let delay = 1000;
-
-            for (let i = 0; i < retries; i++) {
-                try {
-                    response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (response.ok) {
-                        const result = await response.json();
-                        const candidate = result.candidates?.[0];
-                        if (candidate && candidate.content?.parts?.[0]?.text) {
-                            cheerMessageBox.textContent = candidate.content.parts[0].text.trim();
-                        } else {
-                            throw new Error('Invalid response structure from API.');
-                        }
-                        cheerButton.disabled = false;
-                        return;
-                    } else if (response.status === 429 || response.status >= 500) {
-                        if (i === retries - 1) throw new Error(`API request failed after retries with status: ${response.status}`);
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay *= 2;
-                    } else {
-                        throw new Error(`API request failed with status: ${response.status}`);
-                    }
-                } catch (error) {
-                    if (i === retries - 1) {
-                        console.error('Error generating cheer message:', error);
-                        cheerMessageBox.textContent = '메시지를 불러오는 데 실패했어요. 잠시 후 다시 시도해주세요. 😥';
-                        cheerButton.disabled = false;
-                        return;
-                    }
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    delay *= 2;
-                }
-            }
+            // 선택된 메시지를 화면에 보여줍니다.
+            cheerMessageBox.textContent = randomMessage;
         }
     </script>
 
 </body>
 </html>
-
 
