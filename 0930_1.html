@@ -4,234 +4,238 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>시험 시계 - 전주호성중학교</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            font-weight: 600;
-        }
-        
-        .header {
-            text-align: center;
-            padding: 8px;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-        }
-        
+   <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        font-weight: 600;
+    }
+    
+    .header {
+        text-align: center;
+        padding: 8px;
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+    }
+    
+    .school-title {
+        font-size: 2.5em;
+        font-weight: 900;
+        margin-bottom: 8px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .exam-title {
+        font-size: 1.9em;
+        opacity: 0.9;
+        font-weight: 700;
+    }
+    
+    /* ✨ 1. 이 부분에 align-items 속성 추가 */
+    .main-content {
+        flex: 1;
+        display: flex;
+        padding: 0px;
+        gap: 20px;
+        align-items: flex-start; /* 자식 요소들을 위쪽으로 정렬 */
+    }
+    
+    /* ✨ 2. 이 부분에 justify-content 와 padding-top 수정 */
+    .clock-section {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* 내부 콘텐츠를 위쪽으로 정렬 */
+        align-items: center;
+        padding-top: 5vh; /* 위쪽에 적절한 여백 추가 */
+    }
+    
+    .digital-clock {
+        font-size: 8.5em;
+        font-weight: 900;
+        font-family: 'Courier New', monospace;
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        background: rgba(255,255,255,0.1);
+        padding: 20px 30px;
+        border-radius: 15px;
+        border: 3px solid rgba(255,255,255,0.3);
+        margin-bottom: 15px;
+    }
+    
+    .date-display {
+        font-size: 1.9em;
+        opacity: 0.9;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        font-weight: 700;
+    }
+    
+    .info-section {
+        flex: 1;
+        background: rgba(255,255,255,0.15);
+        border-radius: 15px;
+        padding: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .schedule-title {
+        font-size: 2.1em;
+        margin-bottom: 20px;
+        text-align: center;
+        border-bottom: 2px solid rgba(255,255,255,0.3);
+        padding-bottom: 10px;
+        font-weight: 800;
+    }
+    
+    .schedule-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+        font-size: 1.6em;
+    }
+    
+    .schedule-item:last-child {
+        border-bottom: none;
+    }
+    
+    .time-slot {
+        font-weight: 900;
+        color: #FFE082;
+    }
+    
+    .subject {
+        flex: 1;
+        text-align: center;
+        font-weight: 800;
+    }
+    
+    .current-exam {
+        background: rgba(255,193,7,0.3);
+        border-left: 4px solid #FFC107;
+        padding-left: 15px;
+        animation: highlight 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes highlight {
+        from { background: rgba(255,193,7,0.3); }
+        to { background: rgba(255,193,7,0.5); }
+    }
+    
+    .notice-section {
+        background: rgba(220, 53, 69, 0.8);
+        padding: 2px 20px;
+        text-align: center;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .notice-title {
+        font-size: 1.7em;
+        margin-bottom: 10px;
+        color: #FFE082;
+        font-weight: 900;
+    }
+    
+    .notice-content {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-size: 1.4em;
+        font-weight: 700;
+    }
+    
+    .notice-row {
+        opacity: 0.95;
+    }
+    
+    .footer {
+        text-align: center;
+        padding: 8px;
+        background: rgba(0,0,0,0.2);
+        font-size: 1.2em;
+        opacity: 0.8;
+    }
+    
+    @media (max-width: 1200px) {
         .school-title {
-            font-size: 2.5em;
-            font-weight: 900;
-            margin-bottom: 8px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-size: 3em;
         }
-        
         .exam-title {
-            font-size: 1.9em;
-            opacity: 0.9;
-            font-weight: 700;
+            font-size: 2.2em;
         }
-        
-        .main-content {
-            flex: 1;
-            display: flex;
-            padding: 0px;
-            gap: 20px;
-            align-items: flex-start;
+        .digital-clock { 
+            font-size: 7em;
+            padding: 25px 35px;
         }
-        
-        .clock-section {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        
-        .digital-clock {
-            font-size: 8.5em;
-            font-weight: 900;
-            font-family: 'Courier New', monospace;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
-            background: rgba(255,255,255,0.1);
-            padding: 20px 30px;
-            border-radius: 15px;
-            border: 3px solid rgba(255,255,255,0.3);
-            margin-bottom: 15px;
-        }
-        
         .date-display {
-            font-size: 1.9em;
-            opacity: 0.9;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            font-weight: 700;
+            font-size: 2.2em;
         }
-        
-        .info-section {
-            flex: 1;
-            background: rgba(255,255,255,0.15);
-            border-radius: 15px;
-            padding: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
         .schedule-title {
-            font-size: 2.1em;
-            margin-bottom: 20px;
-            text-align: center;
-            border-bottom: 2px solid rgba(255,255,255,0.3);
-            padding-bottom: 10px;
-            font-weight: 800;
+            font-size: 2.4em;
         }
-        
         .schedule-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            font-size: 1.8em;
+        }
+        .notice-title {
+            font-size: 2em;
+        }
+        .notice-content {
             font-size: 1.6em;
         }
-        
-        .schedule-item:last-child {
-            border-bottom: none;
-        }
-        
-        .time-slot {
-            font-weight: 900;
-            color: #FFE082;
-        }
-        
-        .subject {
-            flex: 1;
-            text-align: center;
-            font-weight: 800;
-        }
-        
-        .current-exam {
-            background: rgba(255,193,7,0.3);
-            border-left: 4px solid #FFC107;
-            padding-left: 15px;
-            animation: highlight 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes highlight {
-            from { background: rgba(255,193,7,0.3); }
-            to { background: rgba(255,193,7,0.5); }
-        }
-        
-        .notice-section {
-            background: rgba(220, 53, 69, 0.8);
-            padding: 2px 20px;
-            text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-        
-        .notice-title {
-            font-size: 1.7em;
-            margin-bottom: 10px;
-            color: #FFE082;
-            font-weight: 900;
-        }
-        
-        .notice-content {
-            display: flex;
+    }
+    
+    @media (max-width: 900px) {
+        .main-content { 
             flex-direction: column;
-            gap: 8px;
+            gap: 20px;
+        }
+        .clock-section {
+            padding: 15px;
+        }
+        .school-title {
+            font-size: 2.5em;
+        }
+        .exam-title {
+            font-size: 2em;
+        }
+        .digital-clock { 
+            font-size: 6em;
+            padding: 20px 30px;
+        }
+        .date-display {
+            font-size: 1.8em;
+        }
+        .schedule-title {
+            font-size: 2em;
+        }
+        .schedule-item {
+            font-size: 1.5em;
+        }
+        .notice-title {
+            font-size: 1.8em;
+        }
+        .notice-content {
             font-size: 1.4em;
-            font-weight: 700;
         }
-        
-        .notice-row {
-            opacity: 0.95;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 8px;
-            background: rgba(0,0,0,0.2);
-            font-size: 1.2em;
-            opacity: 0.8;
-        }
-        
-        @media (max-width: 1200px) {
-            .school-title {
-                font-size: 3em;
-            }
-            .exam-title {
-                font-size: 2.2em;
-            }
-            .digital-clock { 
-                font-size: 7em;
-                padding: 25px 35px;
-            }
-            .date-display {
-                font-size: 2.2em;
-            }
-            .schedule-title {
-                font-size: 2.4em;
-            }
-            .schedule-item {
-                font-size: 1.8em;
-            }
-            .notice-title {
-                font-size: 2em;
-            }
-            .notice-content {
-                font-size: 1.6em;
-            }
-        }
-        
-        @media (max-width: 900px) {
-            .main-content { 
-                flex-direction: column;
-                gap: 20px;
-            }
-            .clock-section {
-                padding: 15px;
-            }
-            .school-title {
-                font-size: 2.5em;
-            }
-            .exam-title {
-                font-size: 2em;
-            }
-            .digital-clock { 
-                font-size: 6em;
-                padding: 20px 30px;
-            }
-            .date-display {
-                font-size: 1.8em;
-            }
-            .schedule-title {
-                font-size: 2em;
-            }
-            .schedule-item {
-                font-size: 1.5em;
-            }
-            .notice-title {
-                font-size: 1.8em;
-            }
-            .notice-content {
-                font-size: 1.4em;
-            }
-        }
-    </style>
+    }
+</style>
+    
 </head>
 <body>
     <div class="header">
@@ -325,6 +329,7 @@
     </script>
 </body>
 </html>
+
 
 
 
